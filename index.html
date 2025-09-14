@@ -68,10 +68,10 @@
       position: relative;
       width: 300px; height: 300px;
       transform-style: preserve-3d;
-      animation: rotateBox 12s infinite linear; /* tự động quay */
+      animation: rotateBox 12s infinite linear;
       cursor: pointer;
     }
-    .gift-box:hover { animation-play-state: paused; } /* dừng khi di chuột */
+    .gift-box:hover { animation-play-state: paused; }
     .gift-box.opened { animation: none; transform: scale(1.2); cursor: default; }
 
     .box-side {
@@ -96,19 +96,8 @@
     .top { transform: translateY(-150px) rotateX(90deg); background: #ff80bf; }
     .bottom { transform: translateY(150px) rotateX(-90deg); background: #e60073; }
 
-    /* Ảnh + tên trên các mặt */
-    .img-box {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    .img-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: 8px;
-    }
+    .img-box { position: relative; width: 100%; height: 100%; }
+    .img-box img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 8px; }
     .name-tag {
       position: absolute;
       bottom: 10px;
@@ -143,16 +132,18 @@
       left: 50%;
       transform: translate(-50%, -50%);
       width: 550px;
+      height: 700px; /* cố định PC */
       background: rgba(255, 153, 204, 0.95);
       border-radius: 20px;
-      padding: 45px;
+      padding: 30px 40px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.35);
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       z-index: 100;
       backdrop-filter: blur(6px);
+      overflow: hidden;
     }
     .message-card.show { display: flex; animation: popUp 0.5s ease-out; }
 
@@ -161,24 +152,32 @@
       border-radius: 50%;
       border: 6px solid #faa7e8;
       overflow: hidden;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       box-shadow: 0 0 18px rgba(255,255,255,0.6);
+      flex-shrink: 0;
     }
     .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
 
     .message {
-      text-align: center;
+      text-align: justify;
       color: white;
       font-size: 20px;
       line-height: 1.8;
-      max-width: 450px;
+      max-width: 100%;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 10px;
     }
     .message h3 {
-      color: #fff;
-      margin-bottom: 18px;
-      font-size: 30px;
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 28px;
       text-shadow: 0 2px 8px rgba(0,0,0,0.35);
     }
+
+    .message::-webkit-scrollbar { width: 6px; }
+    .message::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.6); border-radius: 10px; }
+    .message::-webkit-scrollbar-track { background: transparent; }
 
     @keyframes popUp {
       0% { transform: scale(0); opacity: 0; }
@@ -186,7 +185,6 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* keyframes quay hộp */
     @keyframes rotateBox {
       from { transform: rotateY(0deg); }
       to   { transform: rotateY(360deg); }
@@ -213,6 +211,16 @@
       background: rgba(255,255,255,1);
       transform: scale(1.1);
     }
+
+    /* 📱 Responsive mobile */
+    @media (max-width: 768px) {
+      .birthday-title { font-size: 36px; top: 20px; }
+      .gift-box { width: 200px; height: 200px; }
+      .box-side { width: 200px; height: 200px; }
+      .message-card { width: 90%; height: 80vh; padding: 20px; }
+      .message { font-size: 16px; line-height: 1.6; padding-right: 8px; }
+      .message h3 { font-size: 22px; }
+    }
   </style>
 </head>
 <body>
@@ -224,58 +232,28 @@
       ❤️ Happy Birthday Hoài Thương ❤️
     </div>
 
-    <!-- 🎁 Hộp quà -->
     <div class="click-hint" id="clickHint">👉 Nhấn vào hộp quà siu to này đi 👈</div>
 
     <div class="gift-box" id="giftBox">
-      <div class="box-side front">
-        <div class="img-box">
-          <img src="anh1.jpg" alt="Hoài Thương - mặt trước">
-          <div class="name-tag">Hoài Thương</div>
-        </div>
-      </div>
-      <div class="box-side back">
-        <div class="img-box">
-          <img src="anh2.jpg" alt="Hoài Thương - mặt sau">
-          <div class="name-tag">Hoài Thương</div>
-        </div>
-      </div>
-      <div class="box-side right">
-        <div class="img-box">
-          <img src="anh3.jpg" alt="Hoài Thương - mặt phải">
-          <div class="name-tag">Hoài Thương</div>
-        </div>
-      </div>
-      <div class="box-side left">
-        <div class="img-box">
-          <img src="anh4.jpg" alt="Hoài Thương - mặt trái">
-          <div class="name-tag">Hoài Thương</div>
-        </div>
-      </div>
+      <div class="box-side front"><div class="img-box"><img src="anh1.jpg"><div class="name-tag">Hoài Thương</div></div></div>
+      <div class="box-side back"><div class="img-box"><img src="anh2.jpg"><div class="name-tag">Hoài Thương</div></div></div>
+      <div class="box-side right"><div class="img-box"><img src="anh3.jpg"><div class="name-tag">Hoài Thương</div></div></div>
+      <div class="box-side left"><div class="img-box"><img src="anh4.jpg"><div class="name-tag">Hoài Thương</div></div></div>
       <div class="box-side top"><div class="bow"></div></div>
       <div class="box-side bottom">❤️</div>
     </div>
 
     <div class="message-card" id="messageCard">
-      <div class="photo-frame">
-        <img src="anh12.jpg" alt="Ảnh tròn Hoài Thương">
-      </div>
+      <div class="photo-frame"><img src="anh12.jpg"></div>
       <div class="message">
         <h3>Chúc Mừng Sinh Nhật!</h3>
-        <p> `Chúc Thương một ngày sinh nhật thật ý nghĩa,
-tuổi mới mạnh giỏi ngày càng xink hơn 💗,
-trưởng thành hơn qua từng ngày, và đặc biệt chúc cho Thương sẽ luôn thành công trên con đường mình chọn💗,
-trong cuộc sống thì luôn tràn ngập niềm vui và hạnh phúc! 🎉
-Và điều cuối cùng toi cững mong rằng chúng ta hãy iu nhau nhieu hơn nhé💗,
-dù chúng ta có ở xa nhau nhưng tôi tin rằng tình cảm chúng ta kh vì thế mà phai mờ mà ns sẽ thêm nhiều tcam hơn nữa
-qua từng ngày qua từng câu chuyện ta tâm sự với nhau nghe,
-từ những cái đó cta sẽ thấu hiểu và trân trọng nhau hơn qua từng ngày và ngày càng hạnh phúc Thương nhé,iu bạn nhiều💗 </p>
- <p>From (thienpahm)</p>
+        <p>Chúc Thương một ngày sinh nhật thật ý nghĩa, tuổi mới mạnh giỏi ngày càng xink hơn 💗, trưởng thành hơn qua từng ngày, và đặc biệt chúc cho Thương sẽ luôn thành công trên con đường mình chọn 💗. Trong cuộc sống thì luôn tràn ngập niềm vui và hạnh phúc! 🎉</p>
+        <p>Và điều cuối cùng toi cững mong rằng chúng ta hãy iu nhau nhieu hơn nhé 💗, dù chúng ta có ở xa nhau nhưng tôi tin rằng tình cảm chúng ta kh vì thế mà phai mờ mà nó sẽ thêm nhiều tình cảm hơn nữa qua từng ngày qua từng câu chuyện ta tâm sự với nhau nghe. Từ những cái đó chúng ta sẽ thấu hiểu và trân trọng nhau hơn qua từng ngày và ngày càng hạnh phúc Thương nhé, iu bạn nhiều 💗</p>
+        <p><b>From (thienpahm)</b></p>
       </div>
     </div>
   </div>
 
-  <!-- 🎵 Nhạc -->
   <audio id="birthdayMusic" src="nhac.mp3" loop></audio>
   <div class="music-control" id="musicControl">🔊</div>
 
@@ -288,12 +266,10 @@ từ những cái đó cta sẽ thấu hiểu và trân trọng nhau hơn qua t�
     const ctx = canvas.getContext('2d');
     const music = document.getElementById('birthdayMusic');
     const musicControl = document.getElementById('musicControl');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
     let isOpened = false;
 
-    // 🎈 Trái tim bay
     function createHearts() {
       const heartIcons = ['❤️','💖','💗','💓','💘','💕'];
       setInterval(() => {
@@ -309,7 +285,6 @@ từ những cái đó cta sẽ thấu hiểu và trân trọng nhau hơn qua t�
     }
     createHearts();
 
-    // 🎉 Confetti
     let confettiParticles = [];
     function createConfetti() {
       for (let i = 0; i < 300; i++) {
@@ -345,36 +320,21 @@ từ những cái đó cta sẽ thấu hiểu và trân trọng nhau hơn qua t�
       drawConfetti();
     }
 
-    // 🎁 Mở hộp
     giftBox.addEventListener('click', () => {
       if (!isOpened) {
         isOpened = true;
         giftBox.classList.add('opened');
         birthdayTitle.classList.add('hide');
-        createConfetti();
-        animateConfetti();
-
-        // 🔊 phát nhạc
-        music.play().catch(err => {
-          console.log("Không phát nhạc được:", err);
-        });
-
-        setTimeout(() => {
-          messageCard.classList.add('show');
-        }, 1000);
+        createConfetti(); animateConfetti();
+        music.play().catch(err => console.log("Không phát nhạc:", err));
+        setTimeout(() => { messageCard.classList.add('show'); }, 1000);
       }
     });
 
-    // 🎵 Nút bật/tắt nhạc
     let isPlaying = false;
     musicControl.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        musicControl.textContent = "🔇";
-      } else {
-        music.play().catch(err => console.log(err));
-        musicControl.textContent = "🔊";
-      }
+      if (isPlaying) { music.pause(); musicControl.textContent = "🔇"; }
+      else { music.play().catch(err => console.log(err)); musicControl.textContent = "🔊"; }
       isPlaying = !isPlaying;
     });
 
